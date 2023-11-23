@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="formulario.css">
+
+    <title>Cadastro CEP</title>
+</head>
+<body>
+
+    <div class="tituloh1">
+        <h1 id="título">Formulário de CEP</h1>
+        <p id="subtítulo">Informe seus dados</p>
+        <br>
+    </div>
+
+    <div class="container">
+    <form>
+        <fieldset class="grupo">
+
+            <div class="um">
+            <div class="campo">
+                <label><strong>CEP</strong></label>
+                <input type="text" name="cep" id="cep" required>
+            </div>
+
+            <div  class="campo">
+                <label><strong>Logradouro</strong></label>
+                <input type="text" name="logradouro" id="logradouro" required>
+            </div>
+            </div>
+            
+            <div class="dois">
+            <div class="campo">
+                <label><strong>Número</strong></label>
+                <input type="text" name="número" id="número" required>
+            </div>
+
+            <div class="campo">
+                <label><strong>Complemento</strong></label>
+                <input type="text" name="complemento" id="complemento" required>
+            </div>
+            </div>
+            
+            <div class="tres">
+            <div class="campo">
+                <label><strong>Bairro</strong></label>
+                <input type="text" name="bairro" id="bairro" required>
+            </div>
+
+            <div class="campo">
+                <label><strong>Cidade</strong></strong></label>
+                <input type="text" name="localidade" id="localidade" required>
+            </div>
+            </div>
+
+            <div class="campo">
+                <label><strong>Estado</strong></label>
+                <select id="uf">
+                    <option selected disabled value="">Selecione</option>
+                    <option value=""></option>
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                 </select>                 
+            </div>
+        </fieldset class="grupo">
+
+        <button class="botao" type="submit">Concluído</button>
+        
+    </form>
+</div>
+    
+<script>
+    document.getElementById('cep').addEventListener('blur', function() {
+      var cep = this.value;
+      fetch('https://viacep.com.br/ws/' + cep + '/json/')
+          .then(response => response.json())
+          .then(data => {
+              document.getElementById('logradouro').value = data.logradouro;
+              document.getElementById('bairro').value = data.bairro;
+              document.getElementById('localidade').value = data.localidade;
+              var select = document.getElementById('uf');
+              var options = select.options;
+              for (var i = 0; i < options.length; i++) {
+                  if (options[i].value == data.uf) {
+                     select.selectedIndex = i;
+                     break;
+                  }
+              }
+          })
+          .catch(error => console.error('Erro:', error));
+    });
+    </script>
+
+   <script>
+    document.querySelector('.botao').addEventListener('click', function(event) {
+     event.preventDefault(); // Previne o envio do formulário
+     var cep = document.getElementById('cep').value;
+     var logradouro = document.getElementById('logradouro').value;
+     var numero = document.getElementById('número').value;
+     var complemento = document.getElementById('complemento').value;
+     var bairro = document.getElementById('bairro').value;
+     var localidade = document.getElementById('localidade').value;
+     var uf = document.getElementById('uf').value;
+     if (cep && logradouro && numero && complemento && bairro && localidade && uf) {
+       alert('Formulário preenchido com sucesso!');
+     } else {
+       alert('Por favor, preencha todos os campos.');
+     }
+    });
+    </script>
+    
+    
+</body>
+</html>
